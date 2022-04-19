@@ -9,12 +9,13 @@ window.onload=function(){
     
         })
         .then(function(datas){
-
-            
+           console.log(datas);
+           
             var output = "";
             if(datas.status == "success"){
                 datas.payload.map((wallet) =>{
                    output +=  `<li>${wallet.balance}</li>`
+                   
                 })
             }
             document.getElementById('output').innerHTML = output;
@@ -23,6 +24,23 @@ window.onload=function(){
         .catch(function(err){
             console.log(err);
         });
+
+      
     
     }  
-  }
+    // code for sending data to unpacker API
+    btnUpload.addEventListener("click" , function(){
+      const formData = new FormData();
+      console.log(inpFile.files);
+
+      for(const file of inpFile.files){
+          formData.append("myFiles" , file);
+      }
+
+     fetch("http://localhost:8888/api/v1/unpack" ,{
+         method: "post" ,
+         body: formData
+     }).catch(console.error);
+    });
+
+        }
