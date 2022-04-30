@@ -28,19 +28,45 @@ window.onload=function(){
       
     
     }  
-    // code for sending data to unpacker API
-    btnUpload.addEventListener("click" , function(){
-      const formData = new FormData();
-      console.log(inpFile.files);
+    
+    // FilePicker
+    picker.addEventListener("click" , getFilepkr);
+    var item= ''
+    function getFilepkr(){
+        fetch('http://localhost:8888/api/v1/filepicker?type=file')
+        .then(function(res){
+            return res.json();
+    
+        })
+        .then(function(datas){
+           console.log(datas);
+            item = datas.payload.items_picked;
+            console.log(item)
+            
+        
+           
+        })
+        .catch(function(err){
+            console.log(err);
+        });
+    
+    }
 
-      for(const file of inpFile.files){
-          formData.append("myFiles" , file);
-      }
-
+     //Unpacker
+      unpack.addEventListener("click" , function(){
+       
+        console.log(formData)
+        var formData = 
+           { data : item[0] }
+        
      fetch("http://localhost:8888/api/v1/unpack" ,{
          method: "post" ,
-         body: formData
-     }).catch(console.error);
-    });
+         body: JSON.stringify(formData)  
+         
+        })
+        .catch(console.error);
+   
+  });
 
-        }
+
+ }
